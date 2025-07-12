@@ -35,25 +35,30 @@ app.post("/signin", logger,  function(req, res) {
     const password  = req.body.password;
     let foundUser = null;
 
-    for(let i = 0; i<users.length; i++) {
+    for(let i = 0; i < users.length; i++) {
         if(users[i].username === username && users[i].password === password) {
             foundUser = users[i];
         } 
-        else {
+    }
+        if(!foundUser) {
             res.json({
                 message : "credinatials are incorrect"
             })
-        }
-        const token = jwt.sign({
-            username: users[i].username,
+            return
+        } else {
+            const token = jwt.sign({
+            username: users[i].username
         
         }, JWT_SECRET);
+        res.header("jwt", token);
+        
         res.json({
             token: token
         })
-    }
-    console.log(users);
-})
+
+        }
+        
+    })
 
 function auth(req, res, next) {
     const token = req.headers.token;
