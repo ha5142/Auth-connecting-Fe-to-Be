@@ -2,6 +2,13 @@ const express = require("express");
 const jwt  = require("jsonwebtoken");
 const JWT_SECRET = "harsh09090909090";  //password to verify the users 
 const app = express();
+const cors = require("cors");
+app.use(cors({
+  origin: "http://localhost:3000", // Only allow frontend on this origin
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "Authorization", "token"]
+}));
+
 
 
 app.use(express.json());
@@ -47,10 +54,10 @@ app.post("/signin", logger,  function(req, res) {
             return
         } else {
             const token = jwt.sign({
-            username: users[i].username
+            username: foundUser.username
         
         }, JWT_SECRET);
-        res.header("jwt", token);
+        // res.header("jwt", token);
         
         res.json({
             token: token
@@ -100,4 +107,6 @@ app.get("/me",logger,  auth, function(req, res) {
     
 
 })
-app.listen(3000);
+app.listen(3000, () => {
+    console.log("port: 3000")
+});
