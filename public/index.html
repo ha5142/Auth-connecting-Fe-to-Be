@@ -31,11 +31,11 @@
 
     }
     async function getUserInformation() {
-        const token = localStorage.getItem("token");
+        
     
             const response = await axios.get("http://localhost:3000/me", {
            headers: {
-            token: token
+            token: localStorage.getItem("token")
            }
         })
 document.getElementById("information").innerHTML = "Username: " + response.data.username + "  Password: " + response.data.password
